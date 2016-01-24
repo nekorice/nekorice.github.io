@@ -1,0 +1,2 @@
+# nekorice.github.io
+blog
