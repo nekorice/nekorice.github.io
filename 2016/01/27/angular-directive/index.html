@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>angularjs自定义directive | 转角遇到猫</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="最近要用 angularjs 制作一个报告模块,而表格插件还是使用基于 jquery 的插件.
+页面使用了 angularjs 的路由来加载页面.虽然可以在 onload 函数中编写图表的加载,但是这样很不优雅,也不方便维护.如果直接用 directive 来绘制图表和其他数据,这样后台就可以直接考虑把表格数据渲染在 html 上.不仅可以减少一部分数据接口api.也方便做静态化.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angularjs自定义directive">
+<meta property="og:url" content="http://yoursite.com/2016/01/27/angular-directive/">
+<meta property="og:site_name" content="转角遇到猫">
+<meta property="og:description" content="最近要用 angularjs 制作一个报告模块,而表格插件还是使用基于 jquery 的插件.
+页面使用了 angularjs 的路由来加载页面.虽然可以在 onload 函数中编写图表的加载,但是这样很不优雅,也不方便维护.如果直接用 directive 来绘制图表和其他数据,这样后台就可以直接考虑把表格数据渲染在 html 上.不仅可以减少一部分数据接口api.也方便做静态化.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="angularjs自定义directive">
+<meta name="twitter:description" content="最近要用 angularjs 制作一个报告模块,而表格插件还是使用基于 jquery 的插件.
+页面使用了 angularjs 的路由来加载页面.虽然可以在 onload 函数中编写图表的加载,但是这样很不优雅,也不方便维护.如果直接用 directive 来绘制图表和其他数据,这样后台就可以直接考虑把表格数据渲染在 html 上.不仅可以减少一部分数据接口api.也方便做静态化.">
+
+  
+    <link rel="alternative" href="/atom.xml" title="转角遇到猫" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-59387998-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/">转角遇到猫</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/">Home</a></li><li><a href="/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://yoursite.com"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-angular-directive" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/2016/01/27/angular-directive/" class="article-date">
+  <time datetime="2016-01-27T15:13:47.000Z" itemprop="datePublished">01/27 2016 周三</time>
+</a>
+		</span>
+		<span class="meta-elements author">nekorice</span>
+		<div class="commentscount">
+			
+				<a href="http://yoursite.com/2016/01/27/angular-directive/#disqus_thread" class="article-comment-link">Comments</a>
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      angularjs自定义directive
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<p>最近要用 angularjs 制作一个报告模块,而表格插件还是使用基于 jquery 的插件.</p>
+<p>页面使用了 angularjs 的路由来加载页面.虽然可以在 onload 函数中编写图表的加载,但是这样很不优雅,也不方便维护.如果直接用 directive 来绘制图表和其他数据,这样后台就可以直接考虑把表格数据渲染在 html 上.不仅可以减少一部分数据接口api.也方便做静态化.</p>
+<a id="more"></a>
+
+<h1 id="directive_的定义">directive 的定义</h1>
+<p>参考<a href="https://docs.angularjs.org/guide/directive" target="_blank" rel="external">官方文档</a></p>
+<p>定义一个 directive 的基本格式很简单,第一个参数是 directive 的 name, 第二个参数是一个函数,这个函数需要返回一个 object. </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">.directive(<span class="string">'myCustomer'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">  <span class="keyword">return</span> {</div><div class="line">    templateUrl: <span class="string">'my-customer.html'</span></div><div class="line">  };</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>也可以写成依赖注入的数组形式.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">.directive(<span class="string">'myCustomer'</span>, [<span class="variable">$timeout</span>, <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$timeout</span>)</span></span>{</div><div class="line">  <span class="keyword">return</span> {</div><div class="line">    templateUrl: <span class="string">'my-customer.html'</span></div><div class="line">  }</div><div class="line">}])</div></pre></td></tr></table></figure>
+
+<p>directive 的 name 应当使用驼峰命名法,在 angularjs解析 html 时,以’:’,’-‘,’_’分割单词,和 data 或者 x 前缀都会被识别为对应 name 的 directive.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">ng-controller</span>=<span class="value">"Controller"</span>&gt;</span></div><div class="line">  Hello <span class="tag">&lt;<span class="title">input</span> <span class="attribute">ng-model</span>=<span class="value">'name'</span>&gt;</span> <span class="tag">&lt;<span class="title">hr</span>/&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng-bind</span>=<span class="value">"name"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span> <span class="tag">&lt;<span class="title">br</span>/&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng:bind</span>=<span class="value">"name"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span> <span class="tag">&lt;<span class="title">br</span>/&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">ng_bind</span>=<span class="value">"name"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span> <span class="tag">&lt;<span class="title">br</span>/&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">data-ng-bind</span>=<span class="value">"name"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span> <span class="tag">&lt;<span class="title">br</span>/&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="title">span</span> <span class="attribute">x-ng-bind</span>=<span class="value">"name"</span>&gt;</span><span class="tag">&lt;/<span class="title">span</span>&gt;</span> <span class="tag">&lt;<span class="title">br</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="title">div</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<h1 id="directive_的参数配置">directive 的参数配置</h1>
+<p>在第二个参数中函数返回的 object 里定义directive 的配置.</p>
+<p>常见的参数有</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">restrict: 'AEC',</div><div class="line">* E - Element name (default): <span class="tag">&lt;<span class="title">my-directive</span>&gt;</span><span class="tag">&lt;/<span class="title">my-directive</span>&gt;</span></div><div class="line">* A - Attribute (default): <span class="tag">&lt;<span class="title">div</span> <span class="attribute">my-directive</span>=<span class="value">"exp"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></div><div class="line">* C - Class: <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"my-directive: exp;"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></div><div class="line">* M - Comment: <span class="comment">&lt;!-- directive: my-directive exp --&gt;</span></div></pre></td></tr></table></figure>
+
+<p>是否替换掉原有的 directive 标签</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">replace</span>: <span class="literal">True</span>/<span class="literal">False</span></span></div></pre></td></tr></table></figure>
+
+<p>是否把标签的内部元素也传入 directive 进行处理</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">transclude</span>: <span class="string">True/False</span></div></pre></td></tr></table></figure>
+
+<p>模板字符串/模板 url(只能使用其中一个参数)</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">template</span>:<span class="string">""</span></div><div class="line">template_url:<span class="string">""</span></div></pre></td></tr></table></figure>
+
+<p>绑定行为(link/compile二选一)</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">link: <span class="keyword">Object</span> | <span class="function"><span class="keyword">function</span></span></div><div class="line"><span class="title">compile</span>: <span class="keyword">Object</span> | <span class="function"><span class="keyword">function</span></span></div></pre></td></tr></table></figure>
+
+<p>完整的参数参考下述页面<br><a href="https://docs.angularjs.org/api/ng/service/$compile" target="_blank" rel="external">$compile 页面</a></p>
+<h2 id="directive_scope_(isolated_scope)">directive scope (isolated scope)</h2>
+<p>directive 虽然可以访问模块的 scope, 官方建议通过属性把值传递到directive 的isolated scope中.</p>
+<p>参考官方文档</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">.directive(<span class="string">'myCustomer'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">  <span class="keyword">return</span> {</div><div class="line">    restrict: <span class="string">'E'</span>,</div><div class="line">    scope: {</div><div class="line">      customerInfo: <span class="string">'=info'</span></div><div class="line">    },</div><div class="line">    templateUrl: <span class="string">'my-customer-iso.html'</span></div><div class="line">  };</div><div class="line">});</div><div class="line"></div><div class="line">&lt;div ng-controller=<span class="string">"Controller"</span>&gt;</div><div class="line">  &lt;my-customer info=<span class="string">"naomi"</span>&gt;&lt;/my-customer&gt;</div><div class="line">  &lt;my-customer info=<span class="string">"igor"</span>&gt;&lt;/my-customer&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+
+<p>显示为</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">Name</span>: <span class="string">Naomi Address: 1600 Amphitheatre</span></div><div class="line"><span class="attribute">Name</span>: <span class="string">Igor Address: 123 Somewhere</span></div></pre></td></tr></table></figure>
+
+<p>isolated scope 一共有以下几种传入方式</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="string">'='</span>  属性的值使用 angularjs 表达式计算</div><div class="line"><span class="string">'@'</span>  直接使用属性的字符串</div><div class="line"><span class="string">'&'</span>  则是可以传递函数</div></pre></td></tr></table></figure>
+
+<h2 id="link_函数">link 函数</h2>
+<p>在 directive 生成模板的时候,需要一些额外处理,可以在 link 函数中处理.</p>
+<p>需要注意的是, link 函数调用的时候(Post-linking function), </p>
+<p>这个时候如果获取 template_url 中的元素,</p>
+<p>directive 是不一定完成渲染的,</p>
+<p>如果这个时候去取子元素,很可能得到的会是空值.</p>
+<p>要保证 post-link 里面可以获得子元素,应当使用 template</p>
+<h4 id="如何保证在_directive_渲染完成后执行函数">如何保证在 directive 渲染完成后执行函数</h4>
+<p>实在不能避免使用 template_url 来定义模板,目前一种可行办法是使用$timeout service</p>
+<p>使用$timeout,这个 service, 当后面不带时间参数时,</p>
+<p>定义的回调函数将在 angularjs 渲染完成之后调用.</p>
+<p>相当于 jquery 的 document.ready()函数</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">.directive(<span class="string">'myCustomer'</span>, [<span class="variable">$timeout</span>, <span class="function"><span class="keyword">function</span><span class="params">(<span class="variable">$timeout</span>)</span></span>{</div><div class="line">  <span class="keyword">return</span> {</div><div class="line">    templateUrl: <span class="string">'my-customer.html'</span>,</div><div class="line">    replace: <span class="keyword">true</span>,</div><div class="line">    link: <span class="function"><span class="keyword">function</span> <span class="params">(scope, element, attrs)</span> </span>{</div><div class="line">      <span class="variable">$timeout</span>(<span class="function"><span class="keyword">function</span> <span class="params">()</span></span>{</div><div class="line">        <span class="comment">//do something when angularjs loaded</span></div><div class="line">      })</div><div class="line">    }</div><div class="line">  }</div><div class="line">}])</div></pre></td></tr></table></figure>
+
+<h2 id="实时更新_directive">实时更新 directive</h2>
+<p>默认 directive 只在生成的时候 link.</p>
+<p>需要实时更新则要使用 scope.watch,来检测 scope 的修改</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">.directive(<span class="string">'myCustomer'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span></span>{</div><div class="line">  <span class="keyword">return</span> {</div><div class="line">    templateUrl: <span class="string">'my-customer.html'</span>,</div><div class="line">    replace: <span class="keyword">true</span>,</div><div class="line">    link: <span class="function"><span class="keyword">function</span> <span class="params">(scope, element, attrs)</span> </span>{</div><div class="line"></div><div class="line">      scope.<span class="variable">$watch</span>(attrs.filter, <span class="function"><span class="keyword">function</span> <span class="params">(newValue)</span> </span>{</div><div class="line">        <span class="comment">//filter属性可能是用其他的 scope 中传递过来的值        </span></div><div class="line">        scope.filter = newValue</div><div class="line">      })</div><div class="line"></div><div class="line">    }</div><div class="line">  }</div><div class="line">})</div></pre></td></tr></table></figure>
+
+<h2 id="如何动态获取_directive_的_name">如何动态获取 directive 的 name</h2>
+<p>比如定义了几个功能相似的 directive, 又不想用属性来区分,而是想要用 directive name 来区分.</p>
+<p>我定义了一个 chart 的 directive, 但是我还想定义几个叫做 pie,bar 和 line 的 directive<br>来作为 chart type=’pie’|’bar’|’line’ 的别名,这个时候想要动态获取一下 directive 来带入到一个生成 directive 的函数中.</p>
+<p>需要动态获得 directive 的 name,link 函数无法获取 directive 的name, 这个时候就可以使用compile 函数.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">compile: <span class="function"><span class="keyword">function</span><span class="params">(cElem, cAttrs, transclude)</span> </span>{</div><div class="line">      <span class="comment">//get directive name</span></div><div class="line">      <span class="keyword">var</span> name = <span class="keyword">this</span>.name;</div><div class="line">      <span class="comment">//link func</span></div><div class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">(scope, element, attrs)</span> </span>{</div><div class="line">          </div><div class="line">          <span class="comment">//do somethin</span></div><div class="line">          myFunc(name)</div><div class="line"></div><div class="line">        });</div><div class="line">      }</div><div class="line">    }<span class="comment">// end compile</span></div></pre></td></tr></table></figure>
+
+<p>compile 函数定义就是会返回一个 link 函数,而 compile 的this 指针指向的就是 directive 对象.利用闭包就可以传递 name.</p>
+<p>需要注意的是当使用 compile 参数时, link 定义将会失效.</p>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angularjs/">angularjs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/directive/">directive</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+    <a href="/2016/01/28/angular-protractor/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          angular单元测试框架
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/02/05/doc1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          第一篇博客
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/">转角遇到猫</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2016 nekorice<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+<script>
+  var disqus_shortname = 'nekorice';
+  
+  var disqus_url = 'http://yoursite.com/2016/01/27/angular-directive/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<!--script src="http://libs.baidu.com/jquery/2.0.3/jquery.min.js"></script-->
+<script src="/fancybox/jquery.2.0.3.min.js"></script>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
