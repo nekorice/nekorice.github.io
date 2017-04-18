@@ -1,2 +1,6 @@
 # nekorice.github.io
-blog
+
+this is my blog.
+
+[http://blog.nekorice.com/](http://blog.nekorice.com/)
+
