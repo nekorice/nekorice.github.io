@@ -74,7 +74,7 @@ per_page: 10
 pagination_dir: page
 
 # Disqus
-disqus_shortname: nekorice
+#disqus_shortname: nekorice
 
 # Extensions
 ## Plugins: https://github.com/hexojs/hexo/wiki/Plugins
