@@ -19,7 +19,30 @@ google 搜索到的文档很多都是 webpack1.x 的,本来只是想写 webpack2
 
 [https://webpack.js.org/guides/migrating/](https://webpack.js.org/guides/migrating/)
 
+
+## entry
+
+作为入口定义的配置，webpack支持多个入口，可以根据需要打成几个不同的bundle，来按需加载。
+
+比起整个站点都打成一个文件更加灵活。
+
+todo
+
+chunkfile的意义
+
+
+## output
+
+todo
+
+filename 设置成了chunkhash之后如何映射到htmlfile里，--》 使用插件
+
+libiry
+
+libiryTarget
+
 ## resolve 配置
+
 
 ### module
 
@@ -32,9 +55,6 @@ google 搜索到的文档很多都是 webpack1.x 的,本来只是想写 webpack2
 ### extensions
 
 数组,表示省略的后缀名,默认只能省略 .js,.json
-
-
-
 
 
 ## loaders(rule) 配置
@@ -83,12 +103,92 @@ pre-loader 和 post-loader 去掉了,变成了 rule的一个属性
 
 * style-loader, css-loader, less-loader, sass-loader
 
-* 
+* url-loader
+
+* html-loader
+
+* bable-loader
+
+等等
+
+## externals
+
+第三方依赖，希望不使用webpack来bundle的文件
+
+可以使用resolve里的别名
+
+todo
+externals: ["react", /^@angular\//],
+externals: "react", //
+
+```
+externals : {
+  react: 'react'
+}
+
+// or
+
+externals : {
+  lodash : {
+    commonjs: "lodash",
+    amd: "lodash",
+    root: "_" // indicates global variable
+  }
+}
+```
 
 
 ##其他配置
 
 ###target
+
+主要表示打出的文件的环境，默认就是web。除此之外还有node和electron-main等等。
+
+有时候选择web会提示找不到fs和net模块的错误：
+
+```
+Cannot resolve module 'fs'
+Cannot resolve module 'net'
+
+``` 
+
+这个时候在webpack的根配置项中加入如下的配置，就可以避免这个问题
+
+```
+target: "web",
+node:{
+    fs:'empty',
+    net:'empty',
+},
+```
+
+虽然把target改成node也可以解决这个问题，但是打出的bundle就不能够在web中使用了
+
+具体参考：
+
+###devServer
+
+代理的设置和browsersync的配置基本是一样的，都是使用[http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)进行配置，如果之前gulp也是使用browsersync来配置后端的反向代理，那么基本复制对应的配置段到proxy里就可以了。
+
+静态文件的url path缺省则是由output中的publicPath设定来识别，也可以在devServer设置一个publicPath来改写这个配置
+webpack打出的文件默认会在这个url path下面来serve，不用额外自己创建目录结构。
+
+### 导入env变量
+
+传入环境变量，来控制是否是生产环境还是开发环境
+
+```
+-module.exports = {
++module.exports = function(env) {
++  return {
+    plugins: [
+      new webpack.optimize.UglifyJsPlugin({
++        compress: env.production // compress only in production build
+      })
+    ]
++  };
+};
+```
 
 ---
 
