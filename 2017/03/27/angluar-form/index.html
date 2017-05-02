@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>angularjs的ng-model和表单验证(form-validate) | 转角遇到猫</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="由于接触 angularjs, 并且拿它来制作的功能中很少有表单的应用.所以有很长一段时间都没有怎么用到ng-modal, 只觉得这个directive就是个用来绑定 form 中的变量, 开发起来很方便.
+然而今天开始更详细的使用 angularjs 来制作表单应用的时候,才发现自己原来把它想象的太简单了.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angularjs的ng-model和表单验证(form-validate)">
+<meta property="og:url" content="http://blog.nekorice.com/2017/03/27/angluar-form/">
+<meta property="og:site_name" content="转角遇到猫">
+<meta property="og:description" content="由于接触 angularjs, 并且拿它来制作的功能中很少有表单的应用.所以有很长一段时间都没有怎么用到ng-modal, 只觉得这个directive就是个用来绑定 form 中的变量, 开发起来很方便.
+然而今天开始更详细的使用 angularjs 来制作表单应用的时候,才发现自己原来把它想象的太简单了.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="angularjs的ng-model和表单验证(form-validate)">
+<meta name="twitter:description" content="由于接触 angularjs, 并且拿它来制作的功能中很少有表单的应用.所以有很长一段时间都没有怎么用到ng-modal, 只觉得这个directive就是个用来绑定 form 中的变量, 开发起来很方便.
+然而今天开始更详细的使用 angularjs 来制作表单应用的时候,才发现自己原来把它想象的太简单了.">
+
+  
+    <link rel="alternative" href="/atom.xml" title="转角遇到猫" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="../../../../css/style.css" type="text/css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-59387998-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/">转角遇到猫</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/">Home</a></li><li><a href="/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://blog.nekorice.com"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-angluar-form" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/2017/03/27/angluar-form/" class="article-date">
+  <time datetime="2017-03-26T16:15:32.000Z" itemprop="datePublished">03/27 2017 周一</time>
+</a>
+		</span>
+		<span class="meta-elements author">nekorice</span>
+		<div class="commentscount">
+			
+				<a href="http://blog.nekorice.com/2017/03/27/angluar-form/#disqus_thread" class="article-comment-link">Comments</a>
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      angularjs的ng-model和表单验证(form-validate)
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<p>由于接触 angularjs, 并且拿它来制作的功能中很少有表单的应用.<br>所以有很长一段时间都没有怎么用到ng-modal, 只觉得这个directive就是个用来绑定 form 中的变量, 开发起来很方便.</p>
+<p>然而今天开始更详细的使用 angularjs 来制作表单应用的时候,才发现自己原来把它想象的太简单了.</p>
+<a id="more"></a>
+
+<h2 id="ngmodel">ngmodel</h2>
+<p>按照官方指南, ngmodel 主要的功能有以下几个部分:</p>
+<ul>
+<li>绑定视图到 model 对象上, 需要依赖比如input, textarea 或者 select这些 directive.(原来这些标准 html 输入控件也被 angular 写成了一个 directive!)</li>
+<li>提供表单验证(比如 html5标准的 required, number, email, url)</li>
+<li>保存被绑定表单输入控件的状态(valid/invalid, dirty/pristine, touched/untouched, validation errors)</li>
+<li>设置对应的 css class和动画(ng-valid, ng-invalid, ng-dirty, ng-pristine, ng-touched, ng-untouched, ng-empty, ng-not-empty)</li>
+<li><strong>注册</strong>输入控件到它的父表单</li>
+</ul>
+<p>原来之前我一直了解到的只有它的第一点,它还有这么多功能.</p>
+<p>然而就连第一点,我都没有透彻的理解,实在是惭愧.</p>
+<p>先从第一点讲起.其他几点则在第二部分表单验证里面说明.</p>
+<p>ngmodel 可以在以下几种输入控件(已经被angular重写成了directive)中使用.</p>
+<p>让我们过一遍这些已经耳熟能详的标准输入控件在 angularjs 里面被进行了什么样子的神奇改造.</p>
+<h3 id="input">input</h3>
+<p><strong>[type=text]</strong></p>
+<p>text 控件是其他 input 类型的基础,其他 input 控件大多数的属性是从这个属性的控件继承(directive的继承?)过去的.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;input <span class="variable">type=</span><span class="string">"text"</span></div><div class="line">       <span class="variable">ng-model=</span><span class="string">"string"</span></div><div class="line">       [<span class="variable">name=</span><span class="string">"string"</span>]</div><div class="line">       [<span class="variable">required=</span><span class="string">"string"</span>]</div><div class="line">       [<span class="variable">ng-required=</span><span class="string">"string"</span>]</div><div class="line">       [<span class="variable">ng-minlength=</span><span class="string">"number"</span>]</div><div class="line">       [<span class="variable">ng-maxlength=</span><span class="string">"number"</span>]</div><div class="line">       [<span class="variable">pattern=</span><span class="string">"string"</span>]</div><div class="line">       [<span class="variable">ng-pattern=</span><span class="string">"string"</span>]</div><div class="line">       [<span class="variable">ng-change=</span><span class="string">"string"</span>]</div><div class="line">       [<span class="variable">ng-trim=</span><span class="string">"boolean"</span>]&gt;</div></pre></td></tr></table></figure>
+
+<p>这里的 ng-model 只是 input 的一个参数.用于表明这个数据绑定到当前scope哪个变量中.</p>
+<p>name, 很容易漏掉的一个属性,这个属性不只是原来的 input 的 name, 同时 angularjs 也会使用这个 name 注册到当前的 form(directive) 之中.</p>
+<p>所以看起来一样的 input 和 form 以及 select 等等这些标准 html 控件实际上都被用 directive 包装了一层,而让所有的控件数据内容在 angularjs 的管理下.</p>
+<p>仔细想想也是需要这样,才能方便的实现双绑.</p>
+<p>required, ng-minlength, pattern 用来做表单验证的属性,后面统一讲.</p>
+<p>ng-change 就是 onchange.</p>
+<p>ng-trim input 自带了去掉首尾空格的功能,很好,很强大.也可以设置属性为 false 来关闭.</p>
+<p>ng 属性和不带 ng 属性主要是否支持 angularjs 表达式的区别.</p>
+<p><strong>[type==checkbox]</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;input <span class="variable">type=</span><span class="string">"checkbox"</span></div><div class="line">       <span class="variable">ng-model=</span><span class="string">"string"</span></div><div class="line">       [<span class="variable">name=</span><span class="string">"string"</span>]</div><div class="line">       [<span class="variable">ng-true-value=</span><span class="string">"expression"</span>]</div><div class="line">       [<span class="variable">ng-false-value=</span><span class="string">"expression"</span>]</div><div class="line">       [<span class="variable">ng-change=</span><span class="string">"string"</span>]&gt;</div></pre></td></tr></table></figure>
+
+<p>checkbox 就有点特别了</p>
+<p>当没有设置 ng-true-value 和 ng-true-value, 选中 checkbox 会把绑定的变量设置成 true, 反之则为 false.</p>
+<p>然而它居然没有默认的 value 属性, 也就是你设置 value 是不起作用的.只有设置ng-true-value 和 ng-true-value才能设置对应的值.</p>
+<p>曾经就是在这里被坑到了…</p>
+<p>另外如果设置对应 ng-model 绑定的变量属性为 true 或者 ng-true-value 均不能在重绘时使 checkbox 被设置为勾选??</p>
+<p>这个时候就需要使用 ng-check 来设置初始值.</p>
+<p><strong>[type==radio]</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;input <span class="variable">type=</span><span class="string">"radio"</span></div><div class="line">       <span class="variable">ng-model=</span><span class="string">"string"</span></div><div class="line">       <span class="variable">value=</span><span class="string">"string"</span></div><div class="line">       [<span class="variable">name=</span><span class="string">"string"</span>]</div><div class="line">       [<span class="variable">ng-change=</span><span class="string">"string"</span>]</div><div class="line">       <span class="variable">ng-value=</span><span class="string">"string"</span>&gt;</div></pre></td></tr></table></figure>
+
+<p>radio就比较中规中矩了,选择时,设置为 value 或者 ng-value.</p>
+<p><strong>input[range]</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;input <span class="variable">type=</span><span class="string">"range"</span></div><div class="line">       <span class="variable">ng-model=</span><span class="string">"string"</span></div><div class="line">       [<span class="variable">name=</span><span class="string">"string"</span>]</div><div class="line">       [<span class="variable">min=</span><span class="string">"string"</span>]</div><div class="line">       [<span class="variable">max=</span><span class="string">"string"</span>]</div><div class="line">       [<span class="variable">step=</span><span class="string">"string"</span>]</div><div class="line">       [<span class="variable">ng-change=</span><span class="string">"string"</span>]</div><div class="line">       [<span class="variable">ng-checked=</span><span class="string">"expression"</span>]&gt;</div></pre></td></tr></table></figure>
+
+<p>标准的 rage 虽然用的不多,不过也有一些不同的地方</p>
+<p>对于不支持 rage 控件的浏览器, rage 会变成一个普通的 input 框,依然包含 binding,validation 和数值的自动转换.<br>对于支持 rage 控件的浏览器,浏览器并不允许 rage 赋值成一个非法值.</p>
+<p>也就是说,</p>
+<p>1.任何非数值都会被赋值成 (max + min) / 2<br>2.任何数字超过 max 和 min 都会赋值成 max 或者 min.如果有 step 设置则是按照 step 能到的值来进行赋值.</p>
+<p>所以这个控件永远不会有 requied 或者 min 和 max 的 error.</p>
+<p>而且 range 也不能够使用 ngMax,ngMin,ngStep 这些 directive,因为这些 directive 并没有设置对应的属性,导致初始化 dom 时,浏览器会使用默认值min = 0, max = 100, and step = 1,来进行初始化.</p>
+<p>基本上标准的 html5 的 rage 浏览器支持并不是很完善,推荐使用 css 和 js 来实现自定义的 rage 插件会更好一点.</p>
+<h3 id="select">select</h3>
+<p>select 基本没有太多要讲的. </p>
+<p>ngModel 会绑定对应被选择 option 的 value.</p>
+<p>一个问题就是使用 ng-repeat 还是 ng-options 来生成 options.</p>
+<p>官方推荐是使用 ng-options. 因为 ng-options 使用了 DocumentFragment 来生成每个 options,可以减少内存占用和渲染占用时间,并且不会生成一个内置的循环用的 scope.</p>
+<p>另外就是发现之前自己一直没有认真看 html, 原来 select 还有 size 这么一个属性,用于控制下拉列表的显示选项个数,超过这个个数就会出现滚动条,默认值是0,由浏览器自行控制.</p>
+<p>其他控件大同小异,可以参考官方文档,这里就不多说啦.</p>
+<hr>
+<h2 id="表单验证">表单验证</h2>
+<p>一个简简单单的 ngmodel, 就几乎做完了你所想到的表单验证几乎需要的全部功能.只要简单封装几乎就能够满足大部分需求.</p>
+<p>简直不敢让人相信, angularjs 原来内置了一个这么有用的表单验证功能.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;form</div><div class="line">  [name=<span class="string">"string"</span>]&gt;</div><div class="line"><span class="keyword">...</span></div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure>
+
+<p>实际上 form 也被实现成了一个 directive, 所以在需要进行表单验证的 form 控件,设置一个 name</p>
+<p>这样在当前 scope 里面的时候就会多出一个以 name 属性为命名的变量, 这个变量会存储当前 form 的验证结果.</p>
+<p>另外虽然 html 里不允许 form 嵌套,但是在 angularjs 里可以使用 ngForm 标签来进行嵌套. ngForm 是 form directive 的别名.</p>
+<p>其中 form 还会被设置一些 class</p>
+<p>这里直接引用官网</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ng-valid <span class="keyword">is</span> <span class="keyword">set</span> <span class="keyword">if</span> the form <span class="keyword">is</span> valid.</div><div class="line">ng-invalid <span class="keyword">is</span> <span class="keyword">set</span> <span class="keyword">if</span> the form <span class="keyword">is</span> invalid.</div><div class="line">ng-pending <span class="keyword">is</span> <span class="keyword">set</span> <span class="keyword">if</span> the form <span class="keyword">is</span> pending.</div><div class="line">ng-pristine <span class="keyword">is</span> <span class="keyword">set</span> <span class="keyword">if</span> the form <span class="keyword">is</span> pristine.</div><div class="line">ng-dirty <span class="keyword">is</span> <span class="keyword">set</span> <span class="keyword">if</span> the form <span class="keyword">is</span> dirty.</div><div class="line">ng-submitted <span class="keyword">is</span> <span class="keyword">set</span> <span class="keyword">if</span> the form was submitted</div></pre></td></tr></table></figure>
+
+<p>使用 ngSubmit 来进行提交</p>
+<p>因为 model 绑定之后,任何输入都会导致 model 变化,有时候可能不想校验做的这么灵敏.只是希望在 blur 或者 click 事件之后才更新 model.<br>就要使用ngModelOptions这个设置, 来延迟 model 绑定的变化.</p>
+<h3 id="验证中可以使用的属性">验证中可以使用的属性</h3>
+<p>只要控件都配置了各种验证条件,那么改 form 中就会有以下的属性来直接提供验证结果,把对应的变量用于绑定验证成功或者失败的提示以及 css, 即可几乎不用写 js实现表单验证.</p>
+<p>$valid表示控件验证通过, $invalid则和$valid相反</p>
+<p>$error 则为一个错误内容的字典,其中的key为对应的检测属性,值一般为 true, 不存在的错误不会在$error中.</p>
+<p>比如 required, minlength, maxlength, pattern, min, max.</p>
+<p>对于 input[type=email], 还有特殊的 email 类型的错误.</p>
+<p>说了这么多,来看一个例子吧.</p>
+<iframe width="100%" height="600" scroll="no" src="//jsfiddle.net/nekorice/dq0f3s8L/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/angularjs">angularjs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/form">form</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/前端">前端</a></li></ul>
+
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/11/webpack/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          webpack2学习笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/21/angular-module/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          angularjs学习笔记 -- module
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:blog.nekorice.com">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/">转角遇到猫</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2017 nekorice<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+<script>
+  var disqus_shortname = 'nekorice';
+  
+  var disqus_url = 'http://blog.nekorice.com/2017/03/27/angluar-form/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<!--script src="http://libs.baidu.com/jquery/2.0.3/jquery.min.js"></script-->
+<script src="/fancybox/jquery.2.0.3.min.js"></script>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

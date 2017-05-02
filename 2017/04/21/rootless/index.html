@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Mac下使用sudo提示permission denied | 转角遇到猫</title>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="最近入手了一台新的macbook，升级了系统之后居然发现了一个诡异问题。
+系统默认安装的six（python库）居然不能够升级，使用sudo（ All:（All，ALl））提示我权限不足。在类Unix系统里root权限居然会提示权限不足，真的不是在逗我玩嘛。
+当然我可以选择使用virtuallenv来安装python的多环境配置，可是自己的计算机居然不在自己的掌控之下，感觉实在是不爽.
+既然是拿来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac下使用sudo提示permission denied">
+<meta property="og:url" content="http://blog.nekorice.com/2017/04/21/rootless/">
+<meta property="og:site_name" content="转角遇到猫">
+<meta property="og:description" content="最近入手了一台新的macbook，升级了系统之后居然发现了一个诡异问题。
+系统默认安装的six（python库）居然不能够升级，使用sudo（ All:（All，ALl））提示我权限不足。在类Unix系统里root权限居然会提示权限不足，真的不是在逗我玩嘛。
+当然我可以选择使用virtuallenv来安装python的多环境配置，可是自己的计算机居然不在自己的掌控之下，感觉实在是不爽.
+既然是拿来">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mac下使用sudo提示permission denied">
+<meta name="twitter:description" content="最近入手了一台新的macbook，升级了系统之后居然发现了一个诡异问题。
+系统默认安装的six（python库）居然不能够升级，使用sudo（ All:（All，ALl））提示我权限不足。在类Unix系统里root权限居然会提示权限不足，真的不是在逗我玩嘛。
+当然我可以选择使用virtuallenv来安装python的多环境配置，可是自己的计算机居然不在自己的掌控之下，感觉实在是不爽.
+既然是拿来">
+
+  
+    <link rel="alternative" href="/atom.xml" title="转角遇到猫" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="../../../../css/style.css" type="text/css">
+
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-59387998-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+<body>
+  <div id="container">
+    <div class="mobile-nav-panel">
+	<i class="icon-reorder icon-large"></i>
+</div>
+<header id="header">
+	<h1 class="blog-title">
+		<a href="/">转角遇到猫</a>
+	</h1>
+	<nav class="nav">
+		<ul>
+			<li><a href="/">Home</a></li><li><a href="/archives">Archives</a></li>
+			<li><a id="nav-search-btn" class="nav-icon" title="Search"></a></li>
+			<li><a href="/atom.xml" id="nav-rss-link" class="nav-icon" title="RSS Feed"></a></li>
+		</ul>
+	</nav>
+	<div id="search-form-wrap">
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://blog.nekorice.com"></form>
+	</div>
+</header>
+    <div id="main">
+      <article id="post-rootless" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/2017/04/21/rootless/" class="article-date">
+  <time datetime="2017-04-21T02:06:21.000Z" itemprop="datePublished">04/21 2017 周五</time>
+</a>
+		</span>
+		<span class="meta-elements author">nekorice</span>
+		<div class="commentscount">
+			
+				<a href="http://blog.nekorice.com/2017/04/21/rootless/#disqus_thread" class="article-comment-link">Comments</a>
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 class="article-title entry-title" itemprop="name">
+      Mac下使用sudo提示permission denied
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+    	<p>最近入手了一台新的macbook，升级了系统之后居然发现了一个诡异问题。</p>
+<p>系统默认安装的six（python库）居然不能够升级，使用sudo（ All:（All，ALl））提示我权限不足。在类Unix系统里root权限居然会提示权限不足，真的不是在逗我玩嘛。</p>
+<p>当然我可以选择使用virtuallenv来安装python的多环境配置，可是自己的计算机居然不在自己的掌控之下，感觉实在是不爽.</p>
+<p>既然是拿来作开发机，总要研究清楚，不断的google中终于找到了解决方案。</p>
+<p>结果发现苹果坑爹的在新系统中加入了一个rootless的机制。</p>
+<a id="more"></a>
+
+<p>基本就是为了防止程序获取root权限对几个系统关键目录做出修改，被保护的目录主要是以下几个目录：</p>
+<ul>
+<li>/System</li>
+<li>/usr</li>
+<li>/bin</li>
+<li>/sbin<br>预安装的app（比如Appstore，iTunes等等）</li>
+</ul>
+<p>如果你想要自己修改下面这些目录的内容，就需要关闭内核里面的rootless，也就是System Integrity Protection的服务。</p>
+<p>方法如下：</p>
+<ol>
+<li>重启电脑，并且按下command+R，直到苹果logo出现。这个时候就会进入到Recoverty Mode。</li>
+<li>选择一个语言。</li>
+<li>进入恢复模式后，在上面的菜单找到实用程序（Utilities），在里面找到终端（Terminal）</li>
+<li>打开终端输入以下指令,关闭SIP</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">csrutil</span> disable</div></pre></td></tr></table></figure>
+
+<ol>
+<li>重启你的电脑，收工。</li>
+</ol>
+<p>参考资料：</p>
+<p><a href="https://apple.stackexchange.com/questions/208478/how-do-i-disable-system-integrity-protection-sip-aka-rootless-on-os-x-10-11" target="_blank" rel="external">https://apple.stackexchange.com/questions/208478/how-do-i-disable-system-integrity-protection-sip-aka-rootless-on-os-x-10-11</a></p>
+<p><a href="https://support.apple.com/en-us/HT204899" target="_blank" rel="external">https://support.apple.com/en-us/HT204899</a></p>
+
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/mac">mac</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/rootless">rootless</a></li></ul>
+
+			</span>
+		</div>
+	</footer>
+	
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/04/11/webpack/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          webpack2学习笔记
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+    </div>
+    <div class="mb-search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:blog.nekorice.com">
+  </form>
+</div>
+<footer id="footer">
+	<h1 class="footer-blog-title">
+		<a href="/">转角遇到猫</a>
+	</h1>
+	<span class="copyright">
+		&copy; 2017 nekorice<br>
+		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
+		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+	</span>
+</footer>
+    
+<script>
+  var disqus_shortname = 'nekorice';
+  
+  var disqus_url = 'http://blog.nekorice.com/2017/04/21/rootless/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<!--script src="http://libs.baidu.com/jquery/2.0.3/jquery.min.js"></script-->
+<script src="/fancybox/jquery.2.0.3.min.js"></script>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="../../../../js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>

@@ -8,7 +8,7 @@
   <meta name="description">
 <meta property="og:type" content="website">
 <meta property="og:title" content="转角遇到猫">
-<meta property="og:url" content="http://yoursite.com/archives/">
+<meta property="og:url" content="http://blog.nekorice.com/archives/">
 <meta property="og:site_name" content="转角遇到猫">
 <meta property="og:description">
 <meta name="twitter:card" content="summary">
@@ -21,7 +21,7 @@
   
     <link rel="icon" href="/favicon.png">
   
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" href="../css/style.css" type="text/css">
 
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   
@@ -55,23 +55,23 @@
 		</ul>
 	</nav>
 	<div id="search-form-wrap">
-		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://yoursite.com"></form>
+		<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="&#xF002;" class="search-form-submit"><input type="hidden" name="q" value="site:http://blog.nekorice.com"></form>
 	</div>
 </header>
     <div id="main">
       
   
-    <article id="post-angular-protractor" class="post">
+    <article id="post-rootless" class="post">
 	<footer class="entry-meta-header">
 		<span class="meta-elements date">
-			<a href="/2016/01/28/angular-protractor/" class="article-date">
-  <time datetime="2016-01-27T17:40:15.000Z" itemprop="datePublished">01/28 2016 周四</time>
+			<a href="/2017/04/21/rootless/" class="article-date">
+  <time datetime="2017-04-21T02:06:21.000Z" itemprop="datePublished">04/21 2017 周五</time>
 </a>
 		</span>
 		<span class="meta-elements author">nekorice</span>
 		<div class="commentscount">
 			
-				<a href="http://yoursite.com/2016/01/28/angular-protractor/#disqus_thread" class="article-comment-link">Comments</a>
+				<a href="http://blog.nekorice.com/2017/04/21/rootless/#disqus_thread" class="article-comment-link">Comments</a>
 			
 		</div>
 	</footer>
@@ -80,14 +80,24 @@
 		
   
     <h1 itemprop="name" class="entry-title">
-      <a class="article-title" href="/2016/01/28/angular-protractor/">angular单元测试框架</a>
+      <a class="article-title" href="/2017/04/21/rootless/">Mac下使用sudo提示permission denied</a>
     </h1>
   
 
 	</header>
 	<div class="entry-content">
 		
-    	
+			<p>最近入手了一台新的macbook，升级了系统之后居然发现了一个诡异问题。</p>
+<p>系统默认安装的six（python库）居然不能够升级，使用sudo（ All:（All，ALl））提示我权限不足。在类Unix系统里root权限居然会提示权限不足，真的不是在逗我玩嘛。</p>
+<p>当然我可以选择使用virtuallenv来安装python的多环境配置，可是自己的计算机居然不在自己的掌控之下，感觉实在是不爽.</p>
+<p>既然是拿来作开发机，总要研究清楚，不断的google中终于找到了解决方案。</p>
+<p>结果发现苹果坑爹的在新系统中加入了一个rootless的机制。</p>
+
+			
+				<p class="article-more-link">
+					<a href="/2017/04/21/rootless/#more">Read More</a>
+				</p>
+      
     
 	</div>
 	<footer class="entry-footer">
@@ -97,7 +107,236 @@
 			</span>
 			<span class="tags">
 				
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angularjs/">angularjs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/protractor/">protractor</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/单元测试/">单元测试</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/mac">mac</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/rootless">rootless</a></li></ul>
+
+			</span>
+		</div>
+	</footer>
+	
+</article>
+
+
+	<hr class="article-devider">
+
+
+
+  
+    <article id="post-webpack" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/2017/04/11/webpack/" class="article-date">
+  <time datetime="2017-04-10T16:57:32.000Z" itemprop="datePublished">04/11 2017 周二</time>
+</a>
+		</span>
+		<span class="meta-elements author">nekorice</span>
+		<div class="commentscount">
+			
+				<a href="http://blog.nekorice.com/2017/04/11/webpack/#disqus_thread" class="article-comment-link">Comments</a>
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 itemprop="name" class="entry-title">
+      <a class="article-title" href="/2017/04/11/webpack/">webpack2学习笔记</a>
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+			<p>之前一直在用 gulp 来进行前端持续集成和打包.</p>
+<p>对于分散在各地的 html 模板没有什么好方法合并.</p>
+<p>最近刚好有一个可以自由使用技术的新项目,打算用 webpack 来试试.</p>
+
+			
+				<p class="article-more-link">
+					<a href="/2017/04/11/webpack/#more">Read More</a>
+				</p>
+      
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/webpack">webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/前端工程化">前端工程化</a></li></ul>
+
+			</span>
+		</div>
+	</footer>
+	
+</article>
+
+
+	<hr class="article-devider">
+
+
+
+  
+    <article id="post-angluar-form" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/2017/03/27/angluar-form/" class="article-date">
+  <time datetime="2017-03-26T16:15:32.000Z" itemprop="datePublished">03/27 2017 周一</time>
+</a>
+		</span>
+		<span class="meta-elements author">nekorice</span>
+		<div class="commentscount">
+			
+				<a href="http://blog.nekorice.com/2017/03/27/angluar-form/#disqus_thread" class="article-comment-link">Comments</a>
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 itemprop="name" class="entry-title">
+      <a class="article-title" href="/2017/03/27/angluar-form/">angularjs的ng-model和表单验证(form-validate)</a>
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+			<p>由于接触 angularjs, 并且拿它来制作的功能中很少有表单的应用.<br>所以有很长一段时间都没有怎么用到ng-modal, 只觉得这个directive就是个用来绑定 form 中的变量, 开发起来很方便.</p>
+<p>然而今天开始更详细的使用 angularjs 来制作表单应用的时候,才发现自己原来把它想象的太简单了.</p>
+
+			
+				<p class="article-more-link">
+					<a href="/2017/03/27/angluar-form/#more">Read More</a>
+				</p>
+      
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/angularjs">angularjs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/form">form</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/前端">前端</a></li></ul>
+
+			</span>
+		</div>
+	</footer>
+	
+</article>
+
+
+	<hr class="article-devider">
+
+
+
+  
+    <article id="post-angular-module" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/2017/03/21/angular-module/" class="article-date">
+  <time datetime="2017-03-20T16:33:31.000Z" itemprop="datePublished">03/21 2017 周二</time>
+</a>
+		</span>
+		<span class="meta-elements author">nekorice</span>
+		<div class="commentscount">
+			
+				<a href="http://blog.nekorice.com/2017/03/21/angular-module/#disqus_thread" class="article-comment-link">Comments</a>
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 itemprop="name" class="entry-title">
+      <a class="article-title" href="/2017/03/21/angular-module/">angularjs学习笔记 -- module</a>
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+			<p>module 是 angularjs 里面用来组织功能的一个集合.</p>
+<p>可以把一打的功能(包含 controller,directive,service 等等),封装到一个 module 里,来对外部提供一个功能或者一系列功能.</p>
+<p>我们所使用的大部分的  angularjs 的插件都是一个 module, 这样当我们把一个 module 依赖注入到我们的模块中,就可以使用这个 module 的全部功能.</p>
+
+			
+				<p class="article-more-link">
+					<a href="/2017/03/21/angular-module/#more">Read More</a>
+				</p>
+      
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/angularjs">angularjs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/前端">前端</a></li></ul>
+
+			</span>
+		</div>
+	</footer>
+	
+</article>
+
+
+	<hr class="article-devider">
+
+
+
+  
+    <article id="post-angular-main" class="post">
+	<footer class="entry-meta-header">
+		<span class="meta-elements date">
+			<a href="/2017/03/06/angular-main/" class="article-date">
+  <time datetime="2017-03-06T15:34:39.000Z" itemprop="datePublished">03/06 2017 周一</time>
+</a>
+		</span>
+		<span class="meta-elements author">nekorice</span>
+		<div class="commentscount">
+			
+				<a href="http://blog.nekorice.com/2017/03/06/angular-main/#disqus_thread" class="article-comment-link">Comments</a>
+			
+		</div>
+	</footer>
+	
+	<header class="entry-header">
+		
+  
+    <h1 itemprop="name" class="entry-title">
+      <a class="article-title" href="/2017/03/06/angular-main/">angularjs概览</a>
+    </h1>
+  
+
+	</header>
+	<div class="entry-content">
+		
+			<p>用了 angularjs(1.x) 也有一段时间了,然而之前的学习笔记计划全都荒废了.<br>趁着自己要对组内新人进行一些分享,记忆中的一些细节还没有变的模糊,赶紧总结一下个人的学习经验.</p>
+
+			
+				<p class="article-more-link">
+					<a href="/2017/03/06/angular-main/#more">Read More</a>
+				</p>
+      
+    
+	</div>
+	<footer class="entry-footer">
+		<div class="entry-meta-footer">
+			<span class="category">
+				
+			</span>
+			<span class="tags">
+				
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/angularjs">angularjs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/前端">前端</a></li></ul>
 
 			</span>
 		</div>
@@ -121,7 +360,7 @@
 		<span class="meta-elements author">nekorice</span>
 		<div class="commentscount">
 			
-				<a href="http://yoursite.com/2016/01/27/angular-directive/#disqus_thread" class="article-comment-link">Comments</a>
+				<a href="http://blog.nekorice.com/2016/01/27/angular-directive/#disqus_thread" class="article-comment-link">Comments</a>
 			
 		</div>
 	</footer>
@@ -154,7 +393,7 @@
 			</span>
 			<span class="tags">
 				
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/angularjs/">angularjs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/directive/">directive</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/angularjs">angularjs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/directive">directive</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../tags/前端">前端</a></li></ul>
 
 			</span>
 		</div>
@@ -178,7 +417,7 @@
 		<span class="meta-elements author">nekorice</span>
 		<div class="commentscount">
 			
-				<a href="http://yoursite.com/2015/02/05/doc1/#disqus_thread" class="article-comment-link">Comments</a>
+				<a href="http://blog.nekorice.com/2015/02/05/doc1/#disqus_thread" class="article-comment-link">Comments</a>
 			
 		</div>
 	</footer>
@@ -230,7 +469,7 @@
     <div class="mb-search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
     <input type="search" name="q" results="0" placeholder="Search">
-    <input type="hidden" name="q" value="site:yoursite.com">
+    <input type="hidden" name="q" value="site:blog.nekorice.com">
   </form>
 </div>
 <footer id="footer">
@@ -238,7 +477,7 @@
 		<a href="/">转角遇到猫</a>
 	</h1>
 	<span class="copyright">
-		&copy; 2016 nekorice<br>
+		&copy; 2017 nekorice<br>
 		Modify from <a href="http://sanographix.github.io/tumblr/apollo/" target="_blank">Apollo</a> theme, designed by <a href="http://www.sanographix.net/" target="_blank">SANOGRAPHIX.NET</a><br>
 		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
 	</span>
@@ -265,7 +504,7 @@
 <script src="/fancybox/jquery.fancybox.pack.js"></script>
 
 
-<script src="/js/script.js" type="text/javascript"></script>
+<script src="../js/script.js" type="text/javascript"></script>
 
   </div>
 </body>
