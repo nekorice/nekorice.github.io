@@ -46,7 +46,7 @@ module应该算是Angularjs最小逻辑结构.其他的组件和功能都是绑�
 
 不过还有什么地方能够比 controller 更像垃圾堆的地方了嘛╮(╯▽╰)╭
 
-[angularjs学习笔记 -- controller]()
+<!-- [angularjs学习笔记 -- controller]() -->
 
 * directive
 
@@ -56,7 +56,7 @@ directive 本身也可以封装一些独立的逻辑,作为一个逻辑组件.
 
 另外我们常用的 ng-repeat,ng-if,ng-class 等等这些东西,都是angularjs 内建的 directive.
 
-[angularjs学习笔记 -- directive]()
+<!-- [angularjs学习笔记 -- directive]() -->
 
 * provider(Service,Factory,Constant,Value等等)
 
@@ -72,7 +72,7 @@ provider的概念其实很绕,首先用 provider 方法定义的 provider, 可�
 
 可以参考官方的 provider, $http 和 $httpProvider. 官方文档里的 provider 指的是这些在 config 里面依赖注入的 Provider 变量,然而这其实只是 provider 的副产品.
 
-[angularjs学习笔记 -- provider]()
+<!-- [angularjs学习笔记 -- provider]() -->
 
 * test
 
@@ -84,7 +84,8 @@ provider的概念其实很绕,首先用 provider 方法定义的 provider, 可�
 
 angularjs 的测试模块也是非常强大,不仅有模块的 BDD 单元测试, 还直接集成了Browser 的 E2E 测试.
 
-[angularjs学习笔记 -- Jusmine和 单元测试]()
+<!-- [angularjs学习笔记 -- Jusmine和 单元测试]() -->
+  
 
 
 
