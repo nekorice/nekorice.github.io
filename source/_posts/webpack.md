@@ -33,8 +33,6 @@ chunkfile的意义
 
 ## output
 
-todo
-
 filename 设置成了chunkhash之后如何映射到htmlfile里，--》 使用插件
 
 libiry
